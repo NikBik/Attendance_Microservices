@@ -1,0 +1,77 @@
+version: '1'
+
+services:           
+    my-sql-server:
+        build:
+            context: ./MySql_Microservice
+            dockerfile: Dockerfile
+        image: nikbik/my_sql_image:Config-Grafana
+        container_name: db_container
+        ports:
+            - "3306:3306"
+        networks:
+            - nikbik-network
+        environment:
+            MYSQL_DATABASE: attendance_db
+            MYSQL_ROOT_PASSWORD: root
+    
+    zookeeper-server:
+        image: confluentinc/cp-zookeeper:latest
+        container_name: zookeeper_container
+        environment:
+            ZOOKEEPER_CLIENT_PORT: 2181
+            ZOOKEEPER_TICK_TIME: 2000
+        ports:
+            - "2181:2181"   
+        networks:
+            - nikbik-network
+      
+    kafka-server:
+        image: confluentinc/cp-kafka:latest
+        container_name: kafka_container
+        ports:
+            - "9092:9092"
+        networks:
+            - nikbik-network
+        environment:
+            KAFKA_BROKER_ID: 1
+            KAFKA_ZOOKEEPER_CONNECT: zookeeper-server:2181
+            KAFKA_CREATE_TOPICS: "attendance-topic"
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+            KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-server:9092,PLAINTEXT_HOST://localhost:29092
+            KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+        depends_on:
+            zookeeper-server:
+                condition: service_started
+            
+    prometheus-server:
+        build:
+            context: ./prometheus
+            dockerfile: Dockerfile
+        image: nikbik/prometheus_image:Config-Grafana
+        container_name: prometheus_container
+        restart: unless-stopped
+        ports:
+            - "9090:9090"
+        networks:
+            - nikbik-network
+            
+    grafana-server:
+        image: grafana/grafana-oss:8.5.2
+        container_name: grafana_container
+        restart: unless-stopped
+        ports:
+            - "3000:3000"
+        links:
+            - prometheus-server:prometheus-server
+        volumes:
+            - ./grafana:/var/lib/grafana
+        environment:
+            - GF_SECURITY_ADMIN_USER=admin
+            - GF_SECURITY_ADMIN_PASSWORD=password
+        networks:
+            - nikbik-network
+                        
+networks:
+    nikbik-network:
