@@ -14,7 +14,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import com.Attendance.UserSwipes.Controller.SwipesController;
 import com.Attendance.UserSwipes.DTO.UserSwipe;
 import com.Attendance.UserSwipes.ExceptionHandler.ServicesDownException;
 import com.Attendance.UserSwipes.Interfaces.SendSwipeDetails;

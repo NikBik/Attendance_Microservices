@@ -32,7 +32,7 @@ class UserSwipeTest {
     @Test
     void testUserSwipeValidationFailure() {
         UserSwipe userSwipe = new UserSwipe();
-        userSwipe.setFirstName("J"); // Invalid, doesn't meet the @Size constraints
+        userSwipe.setFirstName("J"); 
         userSwipe.setLastName("Doe");
         userSwipe.setContactCode("123");
         userSwipe.setIsSwipeIn(true);

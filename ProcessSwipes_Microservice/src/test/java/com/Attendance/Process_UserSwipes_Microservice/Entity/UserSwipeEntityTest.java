@@ -11,7 +11,6 @@ public class UserSwipeEntityTest {
     void testUserSwipesEntity() {
         UserSwipesEntity userSwipe = new UserSwipesEntity();
         
-        // Mock data
         LocalDateTime timeStamp = LocalDateTime.now();
         UserDetailsEntity userDetails = new UserDetailsEntity();
         userDetails.setUserId(1);
@@ -20,7 +19,6 @@ public class UserSwipeEntityTest {
         userSwipe.setTimeStamp(timeStamp);
         userSwipe.setIsSwipeIn(true);
 
-        // Check if the data is properly set and retrieved
         assertEquals(timeStamp, userSwipe.getTimeStamp());
         assertEquals(true, userSwipe.getIsSwipeIn());
         assertNotNull(userSwipe.getUserId());

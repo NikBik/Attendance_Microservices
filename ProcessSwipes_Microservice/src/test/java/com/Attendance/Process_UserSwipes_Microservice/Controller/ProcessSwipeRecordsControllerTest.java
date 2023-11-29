@@ -1,20 +1,23 @@
 package com.Attendance.Process_UserSwipes_Microservice.Controller;
 
-import com.Attendance.Process_UserSwipes_Microservice.Controller.ProcessSwipeRecordsController;
-import com.Attendance.Process_UserSwipes_Microservice.Dao.ProcessSwipeRecords;
-import com.Attendance.Process_UserSwipes_Microservice.Entity.UserDetailsEntity;
-import com.Attendance.Process_UserSwipes_Microservice.DTO.UserSwipe;
-import com.Attendance.Process_UserSwipes_Microservice.Scheduler.AttendanceCalculationScheduler;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import com.Attendance.Process_UserSwipes_Microservice.DTO.UserSwipe;
+import com.Attendance.Process_UserSwipes_Microservice.Dao.ProcessSwipeRecords;
+import com.Attendance.Process_UserSwipes_Microservice.Entity.UserDetailsEntity;
+import com.Attendance.Process_UserSwipes_Microservice.Scheduler.AttendanceCalculationScheduler;
 
 class ProcessSwipeRecordsControllerTest {
 

@@ -12,7 +12,6 @@ public class AttendanceEntityTest {
 
     @Test
     void testAttendanceEntityGettersAndSetters() {
-        // Create AttendanceEntity object
         AttendanceEntity attendanceEntity = new AttendanceEntity();
         attendanceEntity.setAttendanceId(1);
         attendanceEntity.setAttStatus("Present");
@@ -24,7 +23,6 @@ public class AttendanceEntityTest {
         userDetailsEntity.setUserId(123);
         attendanceEntity.setUserId(userDetailsEntity);
 
-        // Test getters
         assertEquals(1, attendanceEntity.getAttendanceId(), "Attendance ID should match");
         assertEquals("Present", attendanceEntity.getAttStatus(), "Status should match");
         assertNotNull(attendanceEntity.getDate(), "Date should not be null");
@@ -35,7 +33,6 @@ public class AttendanceEntityTest {
 
     @Test
     void testAttendanceEntityToString() {
-        // Create AttendanceEntity object
         AttendanceEntity attendanceEntity = new AttendanceEntity();
         attendanceEntity.setAttendanceId(1);
         attendanceEntity.setAttStatus("Present");

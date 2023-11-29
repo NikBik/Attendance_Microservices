@@ -5,6 +5,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,7 +40,7 @@ class GlobalExceptionHandlerTest {
         when(bindingResult.getFieldErrors()).thenReturn(fieldErrors);
 
         MethodArgumentNotValidException ex = new MethodArgumentNotValidException(null, bindingResult);
-        ResponseEntity<?> responseEntity = globalExceptionHandler.handleValidationErrors(ex);
+        ResponseEntity<Map<String, List<String>>>  responseEntity = globalExceptionHandler.handleValidationErrors(ex);
 
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
     }

@@ -35,33 +35,31 @@ public class OAuth2TokenCustomValidatorTest {
         Map<String, Object> claims = new HashMap<>();
         claims.put("sub", "user123");
         claims.put("scope", "read");
-        claims.put("aud", Arrays.asList("otherAudience"));
+        claims.put("aud", Arrays.asList("expectedAudience"));
         Jwt jwt = new Jwt(tokenValue, issuedAt, expiresAt, headers, claims);
 
 		OAuth2TokenValidatorResult validationResult = validator.validate(jwt);
 
-		Assertions.assertTrue(validationResult.hasErrors());
+		Assertions.assertFalse(validationResult.hasErrors());
 	}
 
 	@Test
 	public void testValidateTokenWithMismatchingAudience() {
         String tokenValue = "sampleTokenValue";
-        Instant issuedAt = Instant.now(); // Replace with the actual issuedAt time
-        Instant expiresAt = issuedAt.plusSeconds(3600); // Replace with the actual expiresAt time
+        Instant issuedAt = Instant.now(); 
+        Instant expiresAt = issuedAt.plusSeconds(3600); 
 
         Map<String, Object> headers = new HashMap<>();
         headers.put("alg", "HS256");
 
         Map<String, Object> claims = new HashMap<>();
-        // Add any necessary claims to the Jwt
+
         claims.put("sub", "user123");
         claims.put("scope", "read");
         claims.put("aud", Arrays.asList("otherAudience"));
 
         Jwt jwt = new Jwt(tokenValue, issuedAt, expiresAt, headers, claims);
-
 		OAuth2TokenValidatorResult validationResult = validator.validate(jwt);
-
 		Assertions.assertTrue(validationResult.hasErrors());
 		OAuth2Error error = validationResult.getErrors().iterator().next();
 		Assertions.assertEquals(OAuth2ErrorCodes.INVALID_TOKEN, error.getErrorCode());

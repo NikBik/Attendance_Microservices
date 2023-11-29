@@ -21,16 +21,13 @@ public class AuthenticateResponseDTOTest {
                 expiresAt,
                 userId
         );
-
-        // Check if the responseDTO fields match the provided values
+        
         Assertions.assertEquals(accessToken, responseDTO.getAccessToken());
         Assertions.assertEquals(refreshToken, responseDTO.getRefreshToken());
         Assertions.assertEquals(expiresAt, responseDTO.getExpiresAt());
         Assertions.assertEquals(userId, responseDTO.getUserId());
 
-        // Check authorityList equality
         Assertions.assertIterableEquals(authorityList, responseDTO.getAuthorityList());
     }
 
-    // You can write more test cases to cover edge cases, null inputs, etc.
 }

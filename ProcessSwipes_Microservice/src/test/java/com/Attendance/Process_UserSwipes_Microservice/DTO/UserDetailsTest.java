@@ -1,8 +1,8 @@
 package com.Attendance.Process_UserSwipes_Microservice.DTO;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.jupiter.api.Test;
-import com.Attendance.Process_UserSwipes_Microservice.DTO.UserDetails;
 
 public class UserDetailsTest {
 

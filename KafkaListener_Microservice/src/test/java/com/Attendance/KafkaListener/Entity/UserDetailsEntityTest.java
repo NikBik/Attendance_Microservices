@@ -8,7 +8,6 @@ public class UserDetailsEntityTest {
 
     @Test
     void testUserDetailsEntityGettersAndSetters() {
-        // Create UserDetailsEntity object
         UserDetailsEntity userDetailsEntity = new UserDetailsEntity();
         userDetailsEntity.setUserId(1);
         userDetailsEntity.setFirstName("John");
@@ -19,7 +18,6 @@ public class UserDetailsEntityTest {
         attendanceEntity.setAttendanceId(100);
         userDetailsEntity.setAttendanceEntity(attendanceEntity);
 
-        // Test getters
         assertEquals(1, userDetailsEntity.getUserId(), "User ID should match");
         assertEquals("John", userDetailsEntity.getFirstName(), "First name should match");
         assertEquals("Doe", userDetailsEntity.getLastName(), "Last name should match");
@@ -29,7 +27,6 @@ public class UserDetailsEntityTest {
 
     @Test
     void testUserDetailsEntityToString() {
-        // Create UserDetailsEntity object
         UserDetailsEntity userDetailsEntity = new UserDetailsEntity();
         userDetailsEntity.setUserId(1);
         userDetailsEntity.setFirstName("John");
