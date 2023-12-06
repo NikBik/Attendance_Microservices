@@ -38,9 +38,9 @@ public class SwipesControllerTest {
 		userSwipe.setIsSwipeIn(true);
 		userSwipe.setLastName("Test");
 
-		String expectedResponse = "1";
+		String expectedResponse = "Your swipe was successfully processed. Please keep ID for reference:1";
 
-		when(sendSwipeDetails.sendSwipeDetails(any(UserSwipe.class))).thenReturn(expectedResponse);
+		when(sendSwipeDetails.sendSwipeDetails(any(UserSwipe.class))).thenReturn("1");
 
 		String response = swipesController.reordSwipesInOut(userSwipe);
 

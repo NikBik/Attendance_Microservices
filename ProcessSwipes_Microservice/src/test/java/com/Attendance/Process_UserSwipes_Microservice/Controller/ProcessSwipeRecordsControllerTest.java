@@ -58,9 +58,9 @@ class ProcessSwipeRecordsControllerTest {
     void testGenerateAttendance() {
         doNothing().when(attendanceCalculationScheduler).attendanceCaclulationScheduler();
 
-        Integer result = processSwipeRecordsController.generateAttendance();
+        String result = processSwipeRecordsController.generateAttendance();
 
-        assertEquals(1, result, "Should return 1 after manually generating attendance");
+        assertEquals("Attendance data have been successfully published.", result, "Should return 1 after manually generating attendance");
         verify(attendanceCalculationScheduler, times(1)).attendanceCaclulationScheduler();
     }
 }

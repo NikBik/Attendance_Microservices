@@ -38,6 +38,8 @@ public class SwipesController {
 
 	@Value("${test.centralized.config.server.coomon}")
 	private String propertyCommonFromServer;
+	
+	private static final String SWIPE_PROCESSED_SUCCESSFULLY= "Your swipe was successfully processed. Please keep ID for reference:";
 
 	@PostMapping("/recordSwipe")
 	@Retry(name = "swipeService", fallbackMethod = "fallbackMethod")
@@ -46,7 +48,7 @@ public class SwipesController {
 		LOGGER.info("Object Received: "+userSwipe.toString());
 		LOGGER.info("Calling Process Swipes Service.");
 		String response = sendSwipeDetails.sendSwipeDetails(userSwipe);
-		return response;
+		return SWIPE_PROCESSED_SUCCESSFULLY+response;
 	}
 
 	@GetMapping("/ping")

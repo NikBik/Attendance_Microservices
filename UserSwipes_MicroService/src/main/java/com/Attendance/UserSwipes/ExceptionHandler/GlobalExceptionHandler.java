@@ -46,7 +46,7 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ErrorMessage> handleErrors(Exception ex) {
 		ErrorMessage message = new ErrorMessage(500, new Date(), ex.getMessage(),
 				"Error occured while processing Request");
-		return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
 
 	}
 

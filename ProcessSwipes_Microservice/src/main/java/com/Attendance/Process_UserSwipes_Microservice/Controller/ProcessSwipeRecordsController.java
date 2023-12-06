@@ -17,26 +17,26 @@ import com.Attendance.Process_UserSwipes_Microservice.Scheduler.AttendanceCalcul
 @RestController
 @RequestMapping("/processSwipes")
 public class ProcessSwipeRecordsController {
-	
+
 	@Autowired
 	private ProcessSwipeRecords processSwipeRecords;
-	
+
 	@Autowired
 	private AttendanceCalculationScheduler attendanceCalculationScheduler;
-	
-	@GetMapping(value="/getAllUsers")
-	public List<UserDetailsEntity>  getAllUsers(){
+
+	@GetMapping(value = "/getAllUsers")
+	public List<UserDetailsEntity> getAllUsers() {
 		return processSwipeRecords.getAllusers();
 	}
-	
-	@PostMapping(value="/saveSwipeRecords")
-	public Integer  saveUserAndSwipeDetails(@RequestBody UserSwipe user){
+
+	@PostMapping(value = "/saveSwipeRecords")
+	public Integer saveUserAndSwipeDetails(@RequestBody UserSwipe user) {
 		return processSwipeRecords.saveUser(user);
 	}
-	
-	@GetMapping(value="/manualGenerateAttendance")
-	public Integer generateAttendance(){
+
+	@GetMapping(value = "/manualGenerateAttendance")
+	public String generateAttendance() {
 		attendanceCalculationScheduler.attendanceCaclulationScheduler();
-		return 1;
+		return "Attendance data have been successfully published.";
 	}
 }

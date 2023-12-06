@@ -7,6 +7,7 @@ public class UserDetails {
 	private String lastName;
 	private String contactCode;
 	private String status;
+	
 	public String getStatus() {
 		return status;
 	}
