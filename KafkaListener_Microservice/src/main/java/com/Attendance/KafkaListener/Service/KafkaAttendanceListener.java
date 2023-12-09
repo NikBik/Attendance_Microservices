@@ -12,8 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.Attendance.KafkaListener.DTO.UserDetails;
 import com.Attendance.KafkaListener.DaoImpl.ProcessAttendance;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service

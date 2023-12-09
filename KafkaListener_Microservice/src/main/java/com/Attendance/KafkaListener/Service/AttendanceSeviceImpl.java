@@ -7,12 +7,14 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.Attendance.KafkaListener.DTO.AttendanceStatus;
-import com.Attendance.KafkaListener.DTO.UserDetails;
 import com.Attendance.KafkaListener.DaoImpl.ProcessAttendance;
+import com.Attendance.KafkaListener.ServiceInterface.AttendanceService;
 
-public class AttendanceSeviceImpl {
+@Service
+public class AttendanceSeviceImpl implements AttendanceService{
 
 	Logger LOGGER = LoggerFactory.getLogger(AttendanceSeviceImpl.class);
 	@Autowired
@@ -29,15 +31,11 @@ public class AttendanceSeviceImpl {
 				LocalDate attDate = (LocalDate) attendance[1];
 				u.setFirstName((String) attendance[4]);
 				u.setContactCode((String) attendance[6]);
-				if (attDate != null && attDate.isAfter(date)) {
-					u.setDate(attDate);
+				u.setDate(attDate);
+				if (attDate != null && attDate.equals(date)) {
 					u.setStatus((String) attendance[3]);
 				} else {
-					// u.userId ,max(a.date)
-					// ,a.timeStamp,a.status,u.firstName,u.lastName,u.contactCode
-					// if attendance date ie. 1 is not of same day mark as Not available
-					u.setDate(null);
-					u.setStatus("NA");
+					u.setStatus("Absent");
 				}
 				attendanceStatus.add(u);
 			}

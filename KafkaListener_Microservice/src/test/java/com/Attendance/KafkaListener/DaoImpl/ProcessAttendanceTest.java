@@ -1,12 +1,17 @@
 package com.Attendance.KafkaListener.DaoImpl;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -54,4 +59,15 @@ public class ProcessAttendanceTest {
 
 		verify(session, times(1)).saveOrUpdate(any(AttendanceEntity.class));
 	}
+	
+	@Test
+	public void testfetchAttendanceData() {
+		List<Object[]> list = new ArrayList<>();
+		Object[] array= {"Test",1,2};
+		list.add(array);
+		when(session.createQuery(anyString())).thenReturn(mock(org.hibernate.query.Query.class));
+		when(session.createQuery(anyString()).list()).thenReturn(list);
+		List<Object[]> result=processAttendance.fetchAttendanceData();
+		assertEquals(result.size(), 1);
+	} 
 }

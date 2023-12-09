@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.Attendance</groupId>
 	<artifactId>eureka-server-microservice</artifactId>
-	<version>Prod.0.0.1</version>
+	<version>Prod.0.0.2</version>
 	<name>EurekaServer</name>
 	<description>Centralized Service Registry for all MicroServices</description>
 	<properties>

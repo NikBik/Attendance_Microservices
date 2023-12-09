@@ -36,10 +36,12 @@ public class ProcessAttendance {
 
 	public List<Object[]> fetchAttendanceData() {
 		Session session = sessionFactory.getCurrentSession();
-		return session.createQuery(
-				"select u.userId ,max(a.date) ,a.auditTimestamp,a.status,u.firstName,u.lastName,u.contactCode from "
-						+ "UserDetailsEntity u left join AttendanceEntity a on a.userId=u.userId group by a.userId"
-						+ "having a.auditTimestamp=max(a.auditTimestamp)")
+		return session
+				.createQuery("select u.userId ,a.date, a.auditTimestamp,a.attStatus,u.firstName,u.lastName,u.contactCode from "
+						+ " UserDetailsEntity u left join AttendanceEntity a on a.userId=u.userId "
+						+ " where (a.userId,a.auditTimestamp) in (select ad.userId,max(ad.auditTimestamp) as maxdate"
+						+ " from AttendanceEntity ad group by ad.userId)")
 				.list();
+
 	}
 }

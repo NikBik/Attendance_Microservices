@@ -8,17 +8,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.Attendance.KafkaListener.DTO.AttendanceStatus;
-import com.Attendance.KafkaListener.Service.AttendanceSeviceImpl;
+import com.Attendance.KafkaListener.ServiceInterface.AttendanceService;
 
 @RestController
-@RequestMapping("/fetchAttendance")
+@RequestMapping("/attendanceService")
 public class AttendanceController {
 	
 	@Autowired
-	private AttendanceSeviceImpl attendanceSeviceImpl;
+	private AttendanceService attendanceSevice;
 
 	@GetMapping(value="/getAttendanceData")
-	public List<AttendanceStatus>  getAllUsers(){
-		return attendanceSeviceImpl.fetchAttendanceData();
+	public List<AttendanceStatus>  getAttendanceData(){
+		return attendanceSevice.fetchAttendanceData();
 	}
 }

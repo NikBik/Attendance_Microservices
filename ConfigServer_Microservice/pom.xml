@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.Attendance</groupId>
 	<artifactId>config-server-microservice</artifactId>
-	<version>Prod.0.0.1</version>
+	<version>Prod.0.0.2</version>
 	<packaging>jar</packaging>
 	<name>SpringCloudConfigServer</name>
 	<description>Used for Centralized Cloud config server</description>

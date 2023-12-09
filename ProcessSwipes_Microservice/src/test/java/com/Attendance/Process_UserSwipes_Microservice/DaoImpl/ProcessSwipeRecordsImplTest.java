@@ -1,15 +1,18 @@
 package com.Attendance.Process_UserSwipes_Microservice.DaoImpl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -74,35 +77,50 @@ class ProcessSwipeRecordsImplTest {
 
 	@Test
 	void testGetAllUsers() {
-		List<UserDetailsEntity> userList= new ArrayList<>();
+		List<UserDetailsEntity> userList = new ArrayList<>();
 		UserDetailsEntity userDetails = new UserDetailsEntity();
 		userDetails.setUserId(1);
 		userDetails.setContactCode("Niket");
-		
+
 		when(session.createQuery(anyString())).thenReturn(mock(org.hibernate.query.Query.class));
 		when(session.createQuery(anyString()).list()).thenReturn(userList);
-		
-		List<UserDetailsEntity> user1=processSwipeRecords.getAllusers();
-		
-		assertEquals(userList.size(), user1.size(),
-				"Should return UserSwipeInOutTimings list with 1 object");
+
+		List<UserDetailsEntity> user1 = processSwipeRecords.getAllusers();
+
+		assertEquals(userList.size(), user1.size(), "Should return UserSwipeInOutTimings list with 1 object");
+	}
+
+	@Test
+	void testSaveUser() {
+
+		UserSwipe userSwipe1 = new UserSwipe();
+		userSwipe1.setId(2);
+		userSwipe1.setIsSwipeIn(true);
+		userSwipe1.setTime(LocalDateTime.now());
+
+		UserDetailsEntity user = new UserDetailsEntity();
+		Criteria mockedCriteria = mock(Criteria.class);
+		when(session.createCriteria(UserDetailsEntity.class)).thenReturn(mockedCriteria);
+		when(mockedCriteria.uniqueResult()).thenReturn(user);
+
+		Integer response = processSwipeRecords.saveUser(userSwipe1);
+		verify(session, times(1)).saveOrUpdate(any(UserSwipesEntity.class));
 	}
 	
 	@Test
-	void testSaveUser() {
-		doNothing().when(session).saveOrUpdate(UserSwipesEntity.class);
-		UserSwipesEntity userSwipe = new UserSwipesEntity();
-		userSwipe.setSwipeRecordId(1);
-		userSwipe.setIsSwipeIn(true);
-		userSwipe.setIsSwipeIn(true);
-		userSwipe.setTimeStamp(LocalDateTime.now());
-		
+	void testSaveNewUser() {
+
 		UserSwipe userSwipe1 = new UserSwipe();
 		userSwipe1.setId(2);
-		userSwipe.setIsSwipeIn(true);
+		userSwipe1.setIsSwipeIn(true);
 		userSwipe1.setTime(LocalDateTime.now());
-		
+
+		Criteria mockedCriteria = mock(Criteria.class);
+		when(session.createCriteria(UserDetailsEntity.class)).thenReturn(mockedCriteria);
+		when(mockedCriteria.uniqueResult()).thenReturn(null);
+
 		Integer response = processSwipeRecords.saveUser(userSwipe1);
-		assertEquals(1,response, "Save user should return an integer");
+		verify(session, times(1)).saveOrUpdate(any(UserSwipesEntity.class));
 	}
+
 }

@@ -1,0 +1,46 @@
+version: '1'
+
+#eureka-naming-server          : 8761
+#config-server                 : 8888
+#api-gaetway-server            : 8765
+#my-sql-server                 : 3306
+#record-user-swipes-server     : 8080
+#process-user-swipes-server    : 8081
+#kafka-listener-swipes-server  : 8082
+#zookeeper-server              : 2181
+#kafka-server                  : 9092
+#prometheus-server             : 9090
+#grafana-server                : 3000
+
+services:
+            
+    prometheus-server:
+        build:
+            context: ./PrometheusServer_Microservice
+            dockerfile: Dockerfile
+        image: nikbik/prometheus_image:Prod.0.0.2.jar
+        container_name: prometheus_container
+        ports:
+            - "9090:9090"
+        restart: always
+        networks:
+            - nikbik-network
+            
+    grafana-server:
+        image: grafana/grafana-oss:8.5.2
+        container_name: grafana_container
+        ports:
+            - "3000:3000"
+        depends_on:
+            - prometheus-server
+        environment:
+            - GF_AUTH_ANONYMOUS_ENABLED=true
+        volumes:
+            - ./GrafanaServer_Microservice/dashboard_provider.yaml:/etc/grafana/provisioning/dashboards/dashboard_provider.yaml
+            - ./GrafanaServer_Microservice/Grafana_Dashboard.json:/etc/grafana/provisioning/dashboards/Grafana_Dashboard.json
+            - ./GrafanaServer_Microservice/prometheus_datasource.yaml:/etc/grafana/provisioning/datasources/prometheus-datasource.yaml
+        networks:
+            - nikbik-network
+                        
+networks:
+    nikbik-network:

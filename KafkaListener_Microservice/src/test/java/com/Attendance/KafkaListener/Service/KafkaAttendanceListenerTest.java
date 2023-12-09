@@ -1,5 +1,6 @@
 package com.Attendance.KafkaListener.Service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -55,4 +56,16 @@ public class KafkaAttendanceListenerTest {
 		verify(processAttendance, times(1)).processAttendance(any(UserDetails.class));
 	}
 
+	@Test
+	public void testGetAttendanceExceptionHandling() {
+
+		String invalidJson = "{\"invalid\": \"json\"}"; 
+
+		try {
+			kafkaAttendanceListener.getAttendance(invalidJson, null); // Invoke the method with invalid JSON
+		} catch (Exception e) {
+			assertEquals("Exception while mapping JSON I/P ", e.getMessage());
+
+		}
+	}
 }

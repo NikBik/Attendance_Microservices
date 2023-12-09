@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>com.Attendance</groupId>
 	<artifactId>process_UserSwipes_Microservice</artifactId>
-	<version>Prod.0.0.1</version>
+	<version>Prod.0.0.2</version>
 	<name>Process_UserSwipes_Microservice</name>
 	<description>To process UserSwipes and stream to kafka</description>
 	<properties>
