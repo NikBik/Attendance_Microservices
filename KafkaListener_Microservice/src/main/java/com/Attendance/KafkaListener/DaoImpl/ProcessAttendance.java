@@ -28,6 +28,7 @@ public class ProcessAttendance {
 		userEntity.setUserId(user.getUserId());
 		attenEntity.setUserId(userEntity);
 		attenEntity.setAttStatus(user.getStatus());
+		attenEntity.setHours(user.getHours());
 		attenEntity.setAuditTimestamp(LocalDateTime.now());
 		attenEntity.setActionedBy(actionedBy);
 		session.saveOrUpdate(attenEntity);
@@ -37,7 +38,7 @@ public class ProcessAttendance {
 	public List<Object[]> fetchAttendanceData() {
 		Session session = sessionFactory.getCurrentSession();
 		return session
-				.createQuery("select u.userId ,a.date, a.auditTimestamp,a.attStatus,u.firstName,u.lastName,u.contactCode from "
+				.createQuery("select u.userId ,a.date, a.auditTimestamp,a.attStatus,u.firstName,u.lastName,u.contactCode,a.hours from "
 						+ " UserDetailsEntity u left join AttendanceEntity a on a.userId=u.userId "
 						+ " where (a.userId,a.auditTimestamp) in (select ad.userId,max(ad.auditTimestamp) as maxdate"
 						+ " from AttendanceEntity ad group by ad.userId)")

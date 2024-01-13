@@ -2,7 +2,6 @@ package com.Attendance.KafkaListener.DTO;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 
 public class AttendanceStatus implements Serializable{
 
@@ -11,6 +10,7 @@ public class AttendanceStatus implements Serializable{
 	private String contactCode;
 	private LocalDate date;
 	private String status;
+	private Double hours;
 	public String getFirstName() {
 		return firstName;
 	}
@@ -34,6 +34,12 @@ public class AttendanceStatus implements Serializable{
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public Double getHours() {
+		return hours;
+	}
+	public void setHours(Double hours) {
+		this.hours = hours;
 	}
 	
 }

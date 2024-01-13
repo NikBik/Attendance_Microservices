@@ -43,8 +43,10 @@ public class AttendanceCalculationScheduler {
 					break;
 				}
 			}
-			if (null == userSwipeTimings)
+			if (null == userSwipeTimings) {
 				userDet.setStatus("Absent");
+				userDet.setHours(0D);
+			}
 			else {
 				LocalDateTime from = userSwipeTimings.getSwipeIn();
 				LocalDateTime to = userSwipeTimings.getSwipeOut();
@@ -56,6 +58,7 @@ public class AttendanceCalculationScheduler {
 					userDet.setStatus("Half_Day");
 				else
 					userDet.setStatus("Present");
+				userDet.setHours((minutes/60.0));
 			}
 			this.kafkaTemplate.send(topicName,userDet);
 		}

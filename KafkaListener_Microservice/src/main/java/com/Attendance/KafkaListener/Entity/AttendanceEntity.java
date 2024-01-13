@@ -4,9 +4,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -28,6 +25,7 @@ public class AttendanceEntity implements Serializable{
 	private LocalDate date;
 	private LocalDateTime auditTimestamp;
 	private String actionedBy;
+	private Double hours;
 	
 	@Column(name="AUDIT_TIMESTAMP")
 	public LocalDateTime getAuditTimestamp() {
@@ -79,7 +77,13 @@ public class AttendanceEntity implements Serializable{
 	@Override
 	public String toString() {
 		return "AttendanceEntity [userId=" + userId + ", attendanceId=" + attendanceId + ", attStatus=" + attStatus
-				+ ", date=" + date + "]";
+				+ ", date=" + date + ", hours="+hours+"]";
+	}
+	public Double getHours() {
+		return hours;
+	}
+	public void setHours(Double hours) {
+		this.hours = hours;
 	}
 	
 	

@@ -111,7 +111,7 @@ services:
         build:
             context: ./ProcessSwipes_Microservice
             dockerfile: Dockerfile
-        image: nikbik/process_user_swipes_image:Prod.0.0.2.jar
+        image: nikbik/process_user_swipes_image:01112024
         container_name: process_swipes_container
         mem_limit: 700m
         ports:
@@ -140,7 +140,7 @@ services:
         build:
             context: ./KafkaListener_Microservice
             dockerfile: Dockerfile
-        image: nikbik/kafka_listener_image:Prod.0.0.2.jar
+        image: nikbik/kafka_listener_image:01112024
         container_name: listener_service_container
         mem_limit: 700m
         ports:

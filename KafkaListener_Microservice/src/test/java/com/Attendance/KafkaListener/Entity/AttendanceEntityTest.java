@@ -37,8 +37,9 @@ public class AttendanceEntityTest {
         attendanceEntity.setAttendanceId(1);
         attendanceEntity.setAttStatus("Present");
         attendanceEntity.setDate(LocalDate.now());
+        attendanceEntity.setHours(2d);        
 
-        String expectedString = "AttendanceEntity [userId=null, attendanceId=1, attStatus=Present, date=" + LocalDate.now() + "]";
+        String expectedString = "AttendanceEntity [userId=null, attendanceId=1, attStatus=Present, date=" + LocalDate.now() +", hours=2.0"+"]";
         assertEquals(expectedString, attendanceEntity.toString(), "toString should match the expected string");
     }
 }

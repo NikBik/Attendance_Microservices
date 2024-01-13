@@ -10,6 +10,8 @@ public class UserDetails implements Serializable {
 	private String lastName;
 	private String contactCode;
 	private String status;
+	private Double hours;
+	
 	public String getStatus() {
 		return status;
 	}
@@ -39,6 +41,12 @@ public class UserDetails implements Serializable {
 	}
 	public void setContactCode(String contactCode) {
 		this.contactCode = contactCode;
+	}
+	public Double getHours() {
+		return hours;
+	}
+	public void setHours(Double hours) {
+		this.hours = hours;
 	}
 
 }

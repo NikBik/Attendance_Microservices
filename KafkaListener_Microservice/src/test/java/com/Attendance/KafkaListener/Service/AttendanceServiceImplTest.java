@@ -31,8 +31,8 @@ public class AttendanceServiceImplTest {
 	@Test
 	public void TestFetchAttendanceData() {
 		List<Object[]> list = new ArrayList<Object[]>();
-		Object[] array= {1,LocalDate.now(),LocalDateTime.now(),"Present","Test","Niket","Test"};
-		Object[] array1= {2,null,LocalDateTime.now(),"NA","Test","Sourabh","TestSrbh"};
+		Object[] array= {1,LocalDate.now(),LocalDateTime.now(),"Present","Test","Niket","Test",2d};
+		Object[] array1= {2,null,LocalDateTime.now(),"NA","Test","Sourabh","TestSrbh",2d};
 		list.add(array1);
 		list.add(array);
 		when(processAttendance.fetchAttendanceData()).thenReturn(list);
@@ -45,8 +45,8 @@ public class AttendanceServiceImplTest {
 	@Test
 	public void TestFetchAttendanceDataException() {
 		List<Object[]> list = new ArrayList<Object[]>();
-		Object[] array= {1,"WrongDate",LocalDateTime.now(),"Present","Test","Niket","Test"};
-		Object[] array1= {2,null,LocalDateTime.now(),"NA","Test","Sourabh","TestSrbh"};
+		Object[] array= {1,"WrongDate",LocalDateTime.now(),"Present","Test","Niket","Test",2d};
+		Object[] array1= {2,null,LocalDateTime.now(),"NA","Test","Sourabh","TestSrbh",2d};
 		list.add(array1);
 		list.add(array);
 		when(processAttendance.fetchAttendanceData()).thenReturn(list);
