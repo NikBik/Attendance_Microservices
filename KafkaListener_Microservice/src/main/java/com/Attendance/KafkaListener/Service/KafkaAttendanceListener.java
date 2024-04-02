@@ -22,6 +22,7 @@ public class KafkaAttendanceListener {
 	private ProcessAttendance processAttendance;
 	
 	@KafkaListener(topics="attendance-topic",groupId="group-id",containerFactory = "userListener")
+			//autoStartup = "true",concurrency = "2",errorHandler = "beanName",filter = "filterBeanName",topicPattern = "",topicPartitions = {})
 	@Transactional
 	public void getAttendance(@Payload String user ,@Headers MessageHeaders headers) {
 		LOGGER.info(user);
