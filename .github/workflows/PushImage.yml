@@ -1,0 +1,58 @@
+name: Build and Push Docker Image
+
+
+on:
+  push:
+branches:
+Attendance_MS_Automating_Workflows_25_Mar  # Replace this with your default branch if not 'main'
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+        - name: Checkout code
+                uses: actions/checkout@v2
+          
+        - name: Login to DockerHub
+              uses: docker/login-action@v1 
+              with:
+                username: ${{ secrets.DOCKERHUB_USERNAME }}
+                password: ${{ secrets.DOCKERHUB_TOKEN }}
+            
+        - name: Build and push Docker image
+              run: |
+                docker-compose build
+                docker-compose push
+            
+        - name: Login to Azure
+             uses: azure/login@v1
+             with:
+               creds: ${{ secrets.AZURE_CREDENTIALS }}
+           
+        - name: Set up AKS context
+             uses: azure/aks-set-context@v1
+             with:
+               creds: ${{ secrets.AZURE_CREDENTIALS }}
+               cluster-name: attendance-system-k8s
+               resource-group: Attendance-System-RG
+           
+        - name: Deploy to AKS
+             uses: azure/k8s-deploy@v1
+             with:
+               manifests: |
+                 Deployment_Scripts/deployment.yaml
+                 Deployment_Scripts/service.yaml
+               images: |
+                 image: nikbik/eureka_server_image:latest
+                 image: nikbik/cloud_config_server_image:latest
+                 image: nikbik/api_gateway_image:latest
+                 image: nikbik/my_sql_image:latest
+                 image: nikbik/user_swipes_image:latest
+                 image: nikbik/process_user_swipes_image:latest
+                 image: nikbik/kafka_listener_image:latest
+                 image: confluentinc/cp-zookeeper:latest
+                 image: confluentinc/cp-kafka:latest
+                 image: nikbik/prometheus_image:latest
+                 image: grafana/grafana-oss:8.5.2

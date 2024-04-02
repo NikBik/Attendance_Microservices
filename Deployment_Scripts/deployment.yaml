@@ -1,0 +1,331 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eureka-naming-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eureka-naming-server
+  template:
+    metadata:
+      labels:
+        app: eureka-naming-server
+    spec:
+      containers:
+        - name: eureka-naming-server
+          image: nikbik/eureka_server_image:latest
+          resources:
+            limits:
+                memory: "700Mi"
+          ports:
+            - containerPort: 8761
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8761
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            timeoutSeconds: 10
+            failureThreshold: 5
+
+-------------------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: config-server-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: config-server
+  template:
+    metadata:
+      labels:
+        app: config-server
+    spec:
+      containers:
+        - name: config-server-container
+          image: nikbik/cloud_config_server_image:latest
+          resources:
+            limits:
+                memory: "700Mi"
+          ports:
+            - containerPort: 8888
+          env:
+            - name: EUREKA.CLIENT.SERVICEURL.DEFAULTZONE
+              value: "http://eureka-naming-server:8761/eureka"
+          livenessProbe:
+            httpGet:
+                path: /actuator/dev
+                port: 8888
+            initialDelaySeconds: 15
+            timeoutSeconds: 10
+            failureThreshold: 5
+
+-----------------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway-server-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-gateway-server
+  template:
+    metadata:
+      labels:
+        app: api-gateway-server
+    spec:
+      containers:
+        - name: gateway_server_container
+          image: nikbik/api_gateway_image:latest
+          resources:
+            limits:
+                memory: "700Mi"
+          ports:
+            - containerPort: 8765
+          env:
+            - name: EUREKA.CLIENT.SERVICEURL.DEFAULTZONE
+              value: "http://eureka-naming-server:8761/eureka"
+
+----------------------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-sql-server-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-sql-server
+  template:
+    metadata:
+      labels:
+        app: my-sql-server
+    spec:
+      containers:
+        - name: db_container
+          image: nikbik/my_sql_image:latest
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_DATABASE
+              value: "attendance_db"
+            - name: MYSQL_ROOT_PASSWORD
+              value: "root"
+              
+--------------------------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: record-user-swipes-server-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: record-user-swipes-server
+  template:
+    metadata:
+      labels:
+        app: record-user-swipes-server
+    spec:
+      containers:
+        - name: record_swipes_container
+          image: nikbik/user_swipes_image:latest
+          resources:
+            limits:
+                memory: "700Mi"
+          ports:
+            - containerPort: 8080
+          env:
+            - name: EUREKA.CLIENT.SERVICEURL.DEFAULTZONE
+              value: "http://eureka-naming-server:8761/eureka"
+            - name: SPRING.CONFIG.IMPORT
+              value: "optional:configserver:http://config-server:8888"
+              
+-------------------------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: process-user-swipes-server-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: process-user-swipes-server
+  template:
+    metadata:
+      labels:
+        app: process-user-swipes-server
+    spec:
+      containers:
+        - name: process_swipes_container
+          image: nikbik/process_user_swipes_image:latest
+          resources:
+            limits:
+                memory: "700Mi"
+        ports:
+          - containerPort: 8081
+        env:
+          - name: SPRING.KAFKA.PRODUCER.BOOTSTRAP-SERVERS
+            value: "kafka-server:9092"
+          - name: EUREKA.CLIENT.SERVICEURL.DEFAULTZONE
+            value: "http://eureka-naming-server:8761/eureka"
+          - name: SPRING.CONFIG.IMPORT
+            value: "optional:configserver:http://config-server:8888"
+          - name: SPRING.DATASOURCE.URL
+            value: "jdbc:mysql://my-sql-server:3306/attendance_db"
+            
+------------------------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-listener-swipes-server-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-listener-swipes-server
+  template:
+    metadata:
+      labels:
+        app: kafka-listener-swipes-server
+    spec:
+      containers:
+        - name: listener_service_container
+          image: nikbik/kafka_listener_image:latest
+          resources:
+            limits:
+              memory: "700Mi"
+        ports:
+          - containerPort: 8082
+        env:
+          - name: SPRING.KAFKA.CONSUMER.BOOTSTRAP-SERVERS
+            value: "kafka-server:9092"
+          - name: EUREKA.CLIENT.SERVICEURL.DEFAULTZONE
+            value: "http://eureka-naming-server:8761/eureka"
+          - name: SPRING.CONFIG.IMPORT
+            value: "optional:configserver:http://config-server:8888"
+          - name: SPRING.DATASOURCE.URL
+            value: "jdbc:mysql://my-sql-server:3306/attendance_db"
+            
+--------------------------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zookeeper-server-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zookeeper-server
+  template:
+    metadata:
+      labels:
+        app: zookeeper-server
+    spec:
+      containers:
+        - name: zookeeper_container
+          image: confluentinc/cp-zookeeper:latest
+          ports:
+            - containerPort: 2181
+          env:
+            - name: ZOOKEEPER_CLIENT_PORT
+              value: "2181"
+            - name: ZOOKEEPER_TICK_TIME
+              value: 2000
+
+------------------------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-server-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-server
+  template:
+    metadata:
+      labels:
+        app: kafka-server
+    spec:
+      containers:
+        - name: kafka_container
+          image: confluentinc/cp-kafka:latest
+          ports:
+            - containerPort: 9092
+          env:
+            - name: KAFKA_BROKER_ID
+              value: "1"
+            - name: KAFKA_ZOOKEEPER_CONNECT
+              value: "zookeeper-server:2181"
+            - name: KAFKA_CREATE_TOPICS
+              value: "attendance-topic"
+            - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+              value: "PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT"
+            - name: KAFKA_ADVERTISED_LISTENERS
+              value: "PLAINTEXT://kafka-server:9092,PLAINTEXT_HOST://localhost:29092"
+            - name: KAFKA_INTER_BROKER_LISTENER_NAME
+              value: "PLAINTEXT"
+            - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
+              value: "1"
+
+-----------------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus-server-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus-server
+  template:
+    metadata:
+      labels:
+        app: prometheus-server
+    spec:
+      containers:
+        - name: prometheus_container
+          image: nikbik/prometheus_image:latest
+          ports:
+            - containerPort: 9090
+            
+-----------------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana-server-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana-server
+  template:
+    metadata:
+      labels:
+        app: grafana-server
+    spec:
+      containers:
+        - name: grafana_container
+          image: grafana/grafana-oss:8.5.2
+          ports:
+            - containerPort: 3000
+          env:
+            - name: GF_AUTH_ANONYMOUS_ENABLED
+              value: "true"
+          volumeMounts:
+            - name: grafana-storage
+              mountPath: /etc/grafana/provisioning/dashboards
+              subPath: dashboards
+            - name: grafana-storage
+              mountPath: /etc/grafana/provisioning/datasources
+              subPath: datasources
+      volumes:
+        - name: grafana-storage
+          hostPath:
+            #directory location on host
+            path: /path/to/your/GrafanaServer_Microservice

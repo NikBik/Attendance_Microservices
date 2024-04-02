@@ -17,7 +17,7 @@ services:
         build:
             context: ./EurekaServer_Microservice
             dockerfile: Dockerfile
-        image: nikbik/eureka_server_image:Prod.0.0.2.jar
+        image: nikbik/eureka_server_image:latest
         container_name: eureka_container
         mem_limit: 700m
         ports:
@@ -30,12 +30,12 @@ services:
             interval: 15s
             timeout: 10s
             retries: 5
-            
+                       
     config-server:
         build:
             context: ./ConfigServer_Microservice
             dockerfile: Dockerfile
-        image: nikbik/cloud_config_server_image:Prod.0.0.2.jar
+        image: nikbik/cloud_config_server_image:latest
         container_name: config_server_container
         mem_limit: 700m
         ports:
@@ -57,7 +57,7 @@ services:
         build:
             context: ./GatewayServer_Microservice
             dockerfile: Dockerfile
-        image: nikbik/api_gateway_image:Prod.0.0.2.jar
+        image: nikbik/api_gateway_image:latest
         container_name: gateway_server_container
         mem_limit: 700m
         ports:
@@ -75,7 +75,7 @@ services:
         build:
             context: ./MySqlServer_Microservice
             dockerfile: Dockerfile
-        image: nikbik/my_sql_image:Prod.0.0.2.jar
+        image: nikbik/my_sql_image:latest
         container_name: db_container
         ports:
             - "3306:3306"
@@ -90,7 +90,7 @@ services:
         build:
             context: ./UserSwipes_MicroService
             dockerfile: Dockerfile
-        image: nikbik/user_swipes_image:Prod.0.0.2.jar
+        image: nikbik/user_swipes_image:latest
         container_name: record_swipes_container
         mem_limit: 700m
         ports:
@@ -111,7 +111,7 @@ services:
         build:
             context: ./ProcessSwipes_Microservice
             dockerfile: Dockerfile
-        image: nikbik/process_user_swipes_image:01112024
+        image: nikbik/process_user_swipes_image:latest
         container_name: process_swipes_container
         mem_limit: 700m
         ports:
@@ -140,7 +140,7 @@ services:
         build:
             context: ./KafkaListener_Microservice
             dockerfile: Dockerfile
-        image: nikbik/kafka_listener_image:01112024
+        image: nikbik/kafka_listener_image:latest
         container_name: listener_service_container
         mem_limit: 700m
         ports:
@@ -201,7 +201,7 @@ services:
         build:
             context: ./PrometheusServer_Microservice
             dockerfile: Dockerfile
-        image: nikbik/prometheus_image:Prod.0.0.2.jar
+        image: nikbik/prometheus_image:latest
         container_name: prometheus_container
         ports:
             - "9090:9090"
@@ -231,6 +231,5 @@ services:
             - ./GrafanaServer_Microservice/prometheus_datasource.yaml:/etc/grafana/provisioning/datasources/prometheus-datasource.yaml
         networks:
             - nikbik-network
-                        
 networks:
     nikbik-network:

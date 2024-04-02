@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>com.Attendance</groupId>
 	<artifactId>kafka-listener-user-swipes-microservice</artifactId>
-	<version>Prod.0.0.2</version>
+	<version>latest</version>
 	<name>KafkaListener</name>
 	<description>To Listen Kafka Topic And save Attendance status to DB</description>
 	<properties>

@@ -1,3 +1,10 @@
+# Stage 1: Build
+FROM maven:3.8.3-openjdk-17-slim AS build
+WORKDIR /app
+COPY . /app
+RUN mvn clean package -DskipTests
+
+# Stage 2: Run
 FROM openjdk:17
-ADD target/kafka-listener-user-swipes-microservice-Prod.0.0.2.jar app.jar
+COPY --from=build /app/target/kafka-listener-user-swipes-microservice-latest.jar /app.jar
 ENTRYPOINT ["java","-jar","/app.jar"]
